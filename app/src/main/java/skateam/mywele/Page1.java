@@ -35,8 +35,11 @@ public class Page1 extends Fragment{
         View view= inflater.inflate(R.layout.activity_page1, container, false);
         txt1= (TextView) view.findViewById(R.id.txtPage1);
         Bundle bundle=getArguments();
-        ArrayList<Flashcard> flashcards= (ArrayList<Flashcard>) bundle.getSerializable("flashcard");
-    
+        ArrayList<Flashcard> dsflashcards= (ArrayList<Flashcard>) bundle.getSerializable("flashcard");
+
+        Flashcard flashcard=dsflashcards.get(1);
+
+        txt1.setText(flashcard.getFront());
 
 
 
@@ -47,14 +50,20 @@ public class Page1 extends Fragment{
 
 
 
-        return view;
+
+
+
+
+
+
+      return view;
+
 
 
 
 
 
     }
-
 
 
 }

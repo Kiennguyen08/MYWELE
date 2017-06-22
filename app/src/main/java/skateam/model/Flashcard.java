@@ -8,36 +8,41 @@ import java.util.ArrayList;
  */
 
 public   class  Flashcard  {
-    static String front;
-    static String ma;
-    static String back;
+     String front;
+     String ma;
+     String back;
 
-    public static String getFront() {
+    public Flashcard(String front, String ma, String back) {
+        this.front = front;
+        this.ma = ma;
+        this.back = back;
+    }
+
+    public String getFront() {
         return front;
     }
 
-    public static void setFront(String front) {
-        Flashcard.front = front;
+    public void setFront(String front) {
+        this.front = front;
     }
 
-    public static String getMa() {
+    public String getMa() {
         return ma;
     }
 
-    public static void setMa(String ma) {
-        Flashcard.ma = ma;
+    public void setMa(String ma) {
+        this.ma = ma;
     }
 
-    public static String getBack() {
+    public String getBack() {
         return back;
     }
 
-    public Flashcard() {
+    public void setBack(String back) {
+        this.back = back;
     }
 
-    public static void setBack(String back) {
-        Flashcard.back = back;
-
+    public Flashcard() {
     }
 }
 
