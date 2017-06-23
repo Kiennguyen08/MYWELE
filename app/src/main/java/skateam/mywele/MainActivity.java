@@ -1,5 +1,6 @@
 package skateam.mywele;
 
+import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -46,13 +47,6 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<Flashcard> dsFlashCard;
 
 
-
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,19 +65,8 @@ public class MainActivity extends AppCompatActivity {
         xuLySaoChepCSDLvaoHT();
         xuLyLayDuLieuDatabase();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment1,createCustomFragment(),"ss").commit();
-
-
-
-
-
-
-
 
     }
-
-
-
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
@@ -94,17 +77,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
     private void xuLySaoChepCSDLvaoHT() {
-        File dbFile=getDatabasePath(DATABASE_NAME);
-        if(!dbFile.exists()) {
+        File dbFile = getDatabasePath(DATABASE_NAME);
+        if (!dbFile.exists()) {
             try {
                 CopyDataBaseFromAsset();
                 Toast.makeText(this, "Copy success from asset", Toast.LENGTH_LONG).show();
@@ -114,10 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
-
-
-
 
     }
 
@@ -135,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
             while((length=inputStream.read(buffer))>0)
             {
                 outputStream.write(buffer,0,length);
-
-
             }
             outputStream.flush();
             outputStream.close();
@@ -158,17 +127,19 @@ public class MainActivity extends AppCompatActivity {
     private void xuLyLayDuLieuDatabase() {
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
         Cursor cursor = database.query("Voca", null, null, null, null, null, null);
-        dsFlashCard = new ArrayList<>();
+        dsFlashCard=new ArrayList<>();
+
+
         dsFlashCard.clear();
 
         while (cursor.moveToNext()) {
-            String ma = cursor.getString(0);
-            String front = cursor.getString(1);
-            String back = cursor.getString(2);
+            String id = cursor.getString(0);
+            String main = cursor.getString(1);
+            String mean = cursor.getString(2);
             Flashcard flashcard=new Flashcard();
-            flashcard.setMa(ma);
-            flashcard.setFront(front);
-            flashcard.setBack(back);
+            flashcard.setId(id);
+            flashcard.setMain(main);
+            flashcard.setMean(mean);
 
 
 
@@ -178,46 +149,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
         cursor.close();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-    public Fragment createCustomFragment(){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("flashcard", dsFlashCard);
-        Page1 page1 = new Page1();
+        Bundle bundle=new Bundle();
+        bundle.putParcelableArrayList("flashcard",dsFlashCard);
+        Page1 page1=new Page1();
         page1.setArguments(bundle);
-        return page1;
+        FragmentManager fm = getFragmentManager();
+        android.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment1,page1);
+        ft.commit();
+
+
+
+
 
     }
+
+
 
 
 }

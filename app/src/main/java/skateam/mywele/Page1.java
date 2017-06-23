@@ -1,6 +1,6 @@
 package skateam.mywele;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -24,39 +24,26 @@ public class Page1 extends Fragment{
 
 
 
+
     @Nullable
     @Override
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        Bundle data=getArguments();
 
 
 
 
         View view= inflater.inflate(R.layout.activity_page1, container, false);
+        ArrayList<Flashcard> flashcards=data.getParcelable("flashcard");
+        Flashcard flashcard1=flashcards.get(1);
+        String e=flashcard1.getMain();
+
         txt1= (TextView) view.findViewById(R.id.txtPage1);
-        Bundle bundle=getArguments();
-        ArrayList<Flashcard> dsflashcards= (ArrayList<Flashcard>) bundle.getSerializable("flashcard");
-
-        Flashcard flashcard=dsflashcards.get(1);
-
-        txt1.setText(flashcard.getFront());
+        txt1.setText(e);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      return view;
+        return view;
 
 
 
