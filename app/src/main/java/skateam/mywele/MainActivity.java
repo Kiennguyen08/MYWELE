@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -189,8 +191,33 @@ public class MainActivity extends AppCompatActivity {
         void sendBundle(Bundle bundle);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = MotionEventCompat.getActionMasked(event);
+
+
+        switch (action){
+            case(MotionEvent.ACTION_DOWN):
+                android.app.Fragment fr;
+                fr=new Page2();
+                android.app.FragmentManager fm = getFragmentManager();
+                android.app.FragmentTransaction ft = fm.beginTransaction();
+
+
+                ft.replace(R.id.fragment1, fr);
+                ft.commit();
+                Log.d("OK","Action was DOWN");
 
 
 
 
+
+
+            default:
+                return super.onTouchEvent(event);
+
+        }
+
+
+    }
 }
