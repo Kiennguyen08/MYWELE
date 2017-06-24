@@ -1,11 +1,12 @@
 package skateam.mywele;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -28,6 +29,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import skateam.model.Flashcard;
 
@@ -44,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
 
+
     static ArrayList<Flashcard> dsFlashCard;
+
+    DataFromActivityToFragment dataFromActivityToFragment;
+
 
 
     @Override
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         xuLySaoChepCSDLvaoHT();
         xuLyLayDuLieuDatabase();
+
 
 
     }
@@ -149,20 +157,38 @@ public class MainActivity extends AppCompatActivity {
 
         }
         cursor.close();
-        Bundle bundle=new Bundle();
-        bundle.putParcelableArrayList("flashcard",dsFlashCard);
+
+
         Page1 page1=new Page1();
-        page1.setArguments(bundle);
-        FragmentManager fm = getFragmentManager();
+        android.app.FragmentManager fm = getFragmentManager();
+        dataFromActivityToFragment= (DataFromActivityToFragment) page1;
         android.app.FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment1,page1);
         ft.commit();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("ds",dsFlashCard);
+        dataFromActivityToFragment.sendBundle(bundle);
+
 
 
 
 
 
     }
+
+
+
+
+
+
+
+
+
+
+    public interface DataFromActivityToFragment {
+        void sendBundle(Bundle bundle);
+    }
+
 
 
 
