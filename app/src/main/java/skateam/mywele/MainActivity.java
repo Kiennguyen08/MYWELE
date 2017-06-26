@@ -138,8 +138,6 @@ public class MainActivity extends AppCompatActivity {
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
         Cursor cursor = database.query("Voca", null, null, null, null, null, null);
         dsFlashCard=new ArrayList<>();
-
-
         dsFlashCard.clear();
 
         while (cursor.moveToNext()) {
@@ -151,15 +149,10 @@ public class MainActivity extends AppCompatActivity {
             flashcard.setMain(main);
             flashcard.setMean(mean);
 
-
-
-
             dsFlashCard.add(flashcard);
-
 
         }
         cursor.close();
-
 
         Page1 page1=new Page1();
         android.app.FragmentManager fm = getFragmentManager();
@@ -169,27 +162,15 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
         Bundle bundle=new Bundle();
         bundle.putSerializable("ds",dsFlashCard);
+        bundle.putInt("id", 0);
         dataFromActivityToFragment.sendBundle(bundle);
 
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
 
     public interface DataFromActivityToFragment {
         void sendBundle(Bundle bundle);
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -220,4 +201,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }
