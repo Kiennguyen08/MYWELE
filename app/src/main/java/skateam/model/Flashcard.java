@@ -11,14 +11,16 @@ import java.util.ArrayList;
  */
 
 public   class  Flashcard  {
-     String main;
+
      String id;
+     String main;
      String mean;
 
 
-    public Flashcard(String main, String id, String mean) {
-        this.main = main;
+    public Flashcard(String id, String main, String mean) {
+
         this.id = id;
+        this.main = main;
         this.mean = mean;
     }
 

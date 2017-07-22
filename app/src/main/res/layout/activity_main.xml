@@ -16,12 +16,12 @@
 
         </include>
 
-        <fragment
-            android:id="@+id/fragment1"
-            android:name="skateam.mywele.Page1"
-
+        <Button
+            android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:onClick="ChuyenManHinh"
+            android:text="FlashCard" />
 
     </LinearLayout>
     <android.support.design.widget.NavigationView

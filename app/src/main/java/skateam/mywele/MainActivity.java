@@ -19,7 +19,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,11 +39,9 @@ import java.util.logging.LogRecord;
 import skateam.model.Flashcard;
 
 public class MainActivity extends AppCompatActivity {
-    String DATABASE_NAME="dbVoca2.sqlite";
-    String DB_PATH_SUFFIX="/databases/";
-    SQLiteDatabase database=null;
-
-
+    String DATABASE_NAME = "Vocabulary.sqlite";
+    String DB_PATH_SUFFIX = "/databases/";
+    SQLiteDatabase database = null;
 
 
     private DrawerLayout mDrawerLayout;
@@ -49,10 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
 
-
     static ArrayList<Flashcard> dsFlashCard;
 
-    DataFromActivityToFragment dataFromActivityToFragment;
 
 
 
@@ -61,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar= (Toolbar) findViewById(R.id.nav_action);
+        mToolbar = (Toolbar) findViewById(R.id.nav_action);
         setSupportActionBar(mToolbar);
 
-        mDrawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle=new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.Close);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.Close);
 
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -76,7 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        dsFlashCard=new ArrayList<>();
+
+
     }
+
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
@@ -103,48 +106,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void CopyDataBaseFromAsset() {
-        try{
-            InputStream inputStream=getAssets().open(DATABASE_NAME);
-            String outfileName= layDuongDanLuuTru();
-            File f=new File(getApplicationInfo().dataDir+DB_PATH_SUFFIX);
-            if(!f.exists()){
+        try {
+            InputStream inputStream = getAssets().open(DATABASE_NAME);
+            String outfileName = layDuongDanLuuTru();
+            File f = new File(getApplicationInfo().dataDir + DB_PATH_SUFFIX);
+            if (!f.exists()) {
                 f.mkdir();
             }
-            OutputStream outputStream=new FileOutputStream(outfileName);
-            byte[] buffer=new byte[1024];
+            OutputStream outputStream = new FileOutputStream(outfileName);
+            byte[] buffer = new byte[1024];
             int length;
-            while((length=inputStream.read(buffer))>0)
-            {
-                outputStream.write(buffer,0,length);
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
             }
             outputStream.flush();
             outputStream.close();
             inputStream.close();
 
 
-        }
-        catch(Exception ex)
-        {
-            Log.e("Loi sao chep",ex.toString());
+        } catch (Exception ex) {
+            Log.e("Loi sao chep", ex.toString());
 
         }
     }
 
-    private String layDuongDanLuuTru(){
-        return getApplicationInfo().dataDir+DB_PATH_SUFFIX+DATABASE_NAME;
+    private String layDuongDanLuuTru() {
+        return getApplicationInfo().dataDir + DB_PATH_SUFFIX + DATABASE_NAME;
 
     }
+
     private void xuLyLayDuLieuDatabase() {
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-        Cursor cursor = database.query("Voca", null, null, null, null, null, null);
-        dsFlashCard=new ArrayList<>();
+        Cursor cursor = database.query("VOCA", null, null, null, null, null, null);
+        dsFlashCard = new ArrayList<>();
         dsFlashCard.clear();
 
         while (cursor.moveToNext()) {
             String id = cursor.getString(0);
             String main = cursor.getString(1);
             String mean = cursor.getString(2);
-            Flashcard flashcard=new Flashcard();
+            Flashcard flashcard = new Flashcard();
             flashcard.setId(id);
             flashcard.setMain(main);
             flashcard.setMean(mean);
@@ -154,52 +155,23 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        Page1 page1=new Page1();
-        android.app.FragmentManager fm = getFragmentManager();
-        dataFromActivityToFragment= (DataFromActivityToFragment) page1;
-        android.app.FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment1,page1);
-        ft.commit();
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("ds",dsFlashCard);
-        bundle.putInt("id", 0);
-        dataFromActivityToFragment.sendBundle(bundle);
 
     }
 
-    public interface DataFromActivityToFragment {
-        void sendBundle(Bundle bundle);
+
+    public void ChuyenManHinh(View view) {
+        Intent intent=new Intent(MainActivity.this, FlashActivity.class);
+        intent.putExtra("dsFlashcard",dsFlashCard);
+        startActivity(intent);
     }
 
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        int action = MotionEventCompat.getActionMasked(event);
 
 
-        switch (action){
-            case(MotionEvent.ACTION_DOWN):
-                android.app.Fragment fr;
-                fr=new Page2();
-                android.app.FragmentManager fm = getFragmentManager();
-                android.app.FragmentTransaction ft = fm.beginTransaction();
-
-
-                ft.replace(R.id.fragment1, fr);
-                ft.commit();
-                Log.d("OK","Action was DOWN");
-
-
-
-
-
-
-            default:
-                return super.onTouchEvent(event);
-
-        }
-
-
-    }
 
 }
+
+
+
+
+
