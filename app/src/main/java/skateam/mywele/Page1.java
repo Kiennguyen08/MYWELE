@@ -52,7 +52,7 @@ public class Page1 extends Fragment implements MOve {
         if (bundle != null) {
             flashcards = (ArrayList<Flashcard>) bundle.getSerializable("ds");
 
-            Flashcard fl = flashcards.get(0);
+            Flashcard fl = flashcards.get(1);
             String e = fl.getMain();
             txt1.setText(e);
         }

@@ -39,17 +39,11 @@ import java.util.logging.LogRecord;
 import skateam.model.Flashcard;
 
 public class MainActivity extends AppCompatActivity {
-    String DATABASE_NAME = "Vocabulary.sqlite";
-    String DB_PATH_SUFFIX = "/databases/";
-    SQLiteDatabase database = null;
-
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
 
-
-    static ArrayList<Flashcard> dsFlashCard;
 
 
 
@@ -69,12 +63,8 @@ public class MainActivity extends AppCompatActivity {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        xuLySaoChepCSDLvaoHT();
-        xuLyLayDuLieuDatabase();
 
 
-
-        dsFlashCard=new ArrayList<>();
 
 
     }
@@ -90,85 +80,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void xuLySaoChepCSDLvaoHT() {
-        File dbFile = getDatabasePath(DATABASE_NAME);
-        if (!dbFile.exists()) {
-            try {
-                CopyDataBaseFromAsset();
-                Toast.makeText(this, "Copy success from asset", Toast.LENGTH_LONG).show();
-
-            } catch (Exception e) {
-                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-
-            }
-        }
-
-    }
-
-    private void CopyDataBaseFromAsset() {
-        try {
-            InputStream inputStream = getAssets().open(DATABASE_NAME);
-            String outfileName = layDuongDanLuuTru();
-            File f = new File(getApplicationInfo().dataDir + DB_PATH_SUFFIX);
-            if (!f.exists()) {
-                f.mkdir();
-            }
-            OutputStream outputStream = new FileOutputStream(outfileName);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
-            outputStream.flush();
-            outputStream.close();
-            inputStream.close();
-
-
-        } catch (Exception ex) {
-            Log.e("Loi sao chep", ex.toString());
-
-        }
-    }
-
-    private String layDuongDanLuuTru() {
-        return getApplicationInfo().dataDir + DB_PATH_SUFFIX + DATABASE_NAME;
-
-    }
-
-    private void xuLyLayDuLieuDatabase() {
-        database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-        Cursor cursor = database.query("VOCA", null, null, null, null, null, null);
-        dsFlashCard = new ArrayList<>();
-        dsFlashCard.clear();
-
-        while (cursor.moveToNext()) {
-            String id = cursor.getString(0);
-            String main = cursor.getString(1);
-            String mean = cursor.getString(2);
-            Flashcard flashcard = new Flashcard();
-            flashcard.setId(id);
-            flashcard.setMain(main);
-            flashcard.setMean(mean);
-
-            dsFlashCard.add(flashcard);
-
-        }
-        cursor.close();
-
-
-    }
-
-
     public void ChuyenManHinh(View view) {
         Intent intent=new Intent(MainActivity.this, FlashActivity.class);
-        intent.putExtra("dsFlashcard",dsFlashCard);
         startActivity(intent);
     }
-
-
-
-
-
 }
 
 
