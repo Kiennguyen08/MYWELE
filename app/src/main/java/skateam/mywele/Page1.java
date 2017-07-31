@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +27,7 @@ public class Page1 extends Fragment implements MOve {
     int a;
 
 
-    ArrayList<Flashcard> flashcards;
+    static ArrayList<Flashcard> flashcards;
 
 
     @Nullable
@@ -35,6 +36,8 @@ public class Page1 extends Fragment implements MOve {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_page1, container, false);
         txt1 = (TextView) view.findViewById(R.id.txtPage1);
+        flashcards=new ArrayList<>();
+
 
         return view;
 
@@ -50,14 +53,19 @@ public class Page1 extends Fragment implements MOve {
     @Override
     public void sendBundle(Bundle bundle) {
         if (bundle != null) {
-            flashcards = (ArrayList<Flashcard>) bundle.getSerializable("ds");
+            try {
+                flashcards = (ArrayList<Flashcard>) bundle.getSerializable("dsFlashCard");
+                Flashcard fl = flashcards.get(0);
+                String e = fl.getMain();
+                txt1.setText(e);
 
-            Flashcard fl = flashcards.get(1);
-            String e = fl.getMain();
-            txt1.setText(e);
+            } catch (NullPointerException e) {
+                Log.e("koi", "sua lai");
+                txt1.setText("NOSTRING");
+            }
+
+
         }
-
-
     }
 
 }

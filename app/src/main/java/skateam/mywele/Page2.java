@@ -46,7 +46,6 @@ public class Page2 extends Fragment implements MOve {
     public void sendBundle(Bundle bundle) {
         if (bundle != null) {
             flashcards2 = (ArrayList<Flashcard>) bundle.getSerializable("ds");
-
             Flashcard fl = flashcards2.get(0);
             String e = fl.getMean();
             txt2.setText(e);
