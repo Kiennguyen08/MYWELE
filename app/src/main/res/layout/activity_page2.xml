@@ -9,10 +9,10 @@
 
     <TextView
         android:id="@+id/txtPage2"
-        android:layout_width="wrap_content"
-        android:layout_height="500dp"
+        android:layout_width="match_parent"
+        android:layout_height="501dp"
         android:layout_weight="1"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center"
         android:textColor="@android:color/black"
         android:textSize="50sp"
         android:textStyle="bold" />

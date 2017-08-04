@@ -1,5 +1,6 @@
 package skateam.mywele;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +17,11 @@ import java.util.ArrayList;
 
 import skateam.model.Flashcard;
 
-public class Page2 extends Fragment implements MOve {
+public class Page2 extends Fragment  {
     // Dùng để tạo trang 2 Flashcard
     static TextView txt2;
-    ArrayList<Flashcard> flashcards2;
+    static  ArrayList<Flashcard> mData2;
+    GetDataInterface sGetDataInterface2;
 
 
 
@@ -40,15 +42,26 @@ public class Page2 extends Fragment implements MOve {
         super.onViewCreated(view, savedInstanceState);
 
     }
-
-
-    @Override
-    public void sendBundle(Bundle bundle) {
-        if (bundle != null) {
-            flashcards2 = (ArrayList<Flashcard>) bundle.getSerializable("ds");
-            Flashcard fl = flashcards2.get(0);
-            String e = fl.getMean();
-            txt2.setText(e);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {sGetDataInterface2 = (GetDataInterface) activity;
+        } catch (ClassCastException e)
+        {
+            throw new ClassCastException(activity.toString() + "must implement GetDataInterface Interface");
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(sGetDataInterface2!=null){
+            mData2 = sGetDataInterface2.getDataList();
+        }
+        Flashcard fc=mData2.get(0);
+        String e=fc.getMean();
+        txt2.setText(e);
+    }
+
+
+
 }
